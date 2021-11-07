@@ -14,7 +14,7 @@ namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
-        private DapperController _dapperController;
+        //private DapperController _dapperController;
 
         private List<Customers> GetCustomers()
         {
@@ -33,18 +33,18 @@ namespace Vidly.Controllers
 
 
         // GET: /<controller>/
-        public IActionResult Index(DapperController dapperController)
-        {
-            _dapperController = dapperController;
+        //public IActionResult Index(DapperController dapperController)
+        //{
+        //    _dapperController = dapperController;
 
 
-            var result = _dapperController.GetCustomers();
+        //    var result = _dapperController.GetCustomers();
 
 
-            //var customers = GetCustomers();
+        //    //var customers = GetCustomers();
            
-            return View(result);
-        }
+        //    return View(result);
+        //}
 
 
         public IActionResult Details(int id)

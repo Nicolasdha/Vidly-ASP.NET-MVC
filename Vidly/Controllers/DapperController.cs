@@ -22,14 +22,14 @@ namespace Vidly.Controllers
         [HttpGet("")]
 
         //Get Customers
-        public async Task<IActionResult> GetCustomers()
+        public async Task<IActionResult> Index()
         {
             var sql = @"SELECT *
-                        FROM [dbo].[customers]";
+                        FROM [dbo].[customer]";
 
             using (var connection = new SqlConnection(CONNECTION_STRING))
             {
-                var persons = await connection.QueryAsync<Person>(sql);
+                var persons = await connection.QueryAsync<Customers>(sql);
                 return Ok(persons);
             }
         }

@@ -20,7 +20,7 @@ namespace Vidly.Controllers
 {
 
     [ApiController]
-    [Route("api/dapper")]
+    [Route("api/dper")]
 
     public class DapperControllerPractice : Controller
     {
