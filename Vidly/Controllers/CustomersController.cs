@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Vidly.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,37 +18,33 @@ namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
-        //private DapperController _dapperController;
+
+        private const string CONNECTION_STRING = "Server=.; Database=Vidly; User Id=sa; Password=Pittsburgh1; Trusted_Connection=False; MultipleActiveResultSets=true";
+
 
         private List<Customers> GetCustomers()
         {
 
+            var sql = @"SELECT * 
+                        FROM DBO.Customer C";
 
 
-            var customer = new List<Customers>{
-                new Customers { Name = "Nicolas Durik-Ha", Id = 33},
-                new Customers { Name = "Loopah Scoopah", Id= 22 },
-                new Customers { Name = "Loufah Poofah", Id= 11 }
-                };
+            using (IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
+            {
 
-            return customer;
+                var people = cnn.Query<Customers>(sql);
+
+                return (List<Customers>)people;
+            }
         }
 
+        public IActionResult Index()
+        {
 
+            var customers = GetCustomers();
 
-        // GET: /<controller>/
-        //public IActionResult Index(DapperController dapperController)
-        //{
-        //    _dapperController = dapperController;
-
-
-        //    var result = _dapperController.GetCustomers();
-
-
-        //    //var customers = GetCustomers();
-           
-        //    return View(result);
-        //}
+            return View(customers);
+        }
 
 
         public IActionResult Details(int id)

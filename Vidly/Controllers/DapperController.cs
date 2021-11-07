@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Vidly.Models;
 
 namespace Vidly.Controllers
@@ -22,7 +23,7 @@ namespace Vidly.Controllers
         [HttpGet("")]
 
         //Get Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> GetCustomers()
         {
             var sql = @"SELECT *
                         FROM [dbo].[customer]";
@@ -30,8 +31,12 @@ namespace Vidly.Controllers
             using (var connection = new SqlConnection(CONNECTION_STRING))
             {
                 var persons = await connection.QueryAsync<Customers>(sql);
-                return Ok(persons);
+
+
+
+                 return Ok(persons);
             }
+
         }
 
     }
