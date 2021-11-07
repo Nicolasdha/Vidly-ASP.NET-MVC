@@ -25,14 +25,18 @@ namespace Vidly.Controllers
         private List<Customers> GetCustomers()
         {
 
-            var sql = @"SELECT * 
-                        FROM DBO.Customer C";
+            var sql = @"SELECT 
+                            c.*, mt.*
+                        FROM DBO.Customer c
+                        JOIN DBO.MembershipType mt
+                            ON C.MembershipTypeId = MT.ID;";
 
 
             using (IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
             {
 
-                var people = cnn.Query<Customers>(sql);
+                var people = cnn.Query<Customers, MembershipType, Customers>(sql, (customer, member) => { customer.MembershipType = member; return customer; });
+
 
                 return (List<Customers>)people;
             }
@@ -58,7 +62,16 @@ namespace Vidly.Controllers
 
             return View(customer);
 
-
         }
+
+
+        public IActionResult New()
+        {
+
+
+            return View();
+        }
+
+
     }
 }

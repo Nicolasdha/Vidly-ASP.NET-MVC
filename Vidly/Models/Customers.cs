@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Vidly.Models
 {
@@ -15,6 +16,9 @@ namespace Vidly.Models
         //Sometimes for optimization dont want to load the entire membership object just the FK so EF recognizes this convention and treats this prop name and the FK 
         public byte MembershipTypeId { get; set; }
 
+
+        [Display(Name="Date Of Birth")]
+        public DateTime Birthdate { get; set; }
 
     }
 

@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Vidly.Models;
 
@@ -12,19 +16,24 @@ namespace Vidly.Controllers
 
     public class MoviesController : Controller
     {
+        private const string CONNECTION_STRING = "Server=.; Database=Vidly; User Id=sa; Password=Pittsburgh1; Trusted_Connection=False; MultipleActiveResultSets=true";
 
         private List<Movies> GetMovies()
         {
 
-            var moviesList = new List<Movies>
+            var sql = @"SELECT * FROM [dbo].[Movies]";
+
+
+            using (IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
             {
-                new Movies {Name = "The Last Of The Mohicans"},
-                new Movies {Name = "The Warriors"}
-            };
 
-            return moviesList;
+                var people = cnn.Query<Movies>(sql);
+
+
+                return (List<Movies>)people;
+            }
+
         }
-
 
 
         // GET: /<controller>/
@@ -36,7 +45,18 @@ namespace Vidly.Controllers
         }
 
 
-     
+        public IActionResult Details(int id)
+        {
+            var movie = GetMovies().SingleOrDefault(m => m.Id == id);
+
+            if (movie == null)
+                return this.StatusCode(StatusCodes.Status418ImATeapot, "Customer Not Found");
+
+
+            return View(movie);
+
+        }
+
 
 
 
