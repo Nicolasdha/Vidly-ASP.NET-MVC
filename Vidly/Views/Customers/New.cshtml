@@ -1,4 +1,6 @@
-﻿@model Vidly.Models.Customers
+﻿@model Vidly.Models.ViewModels.NewCustomerViewModel
+
+
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -11,16 +13,27 @@
 @using (Html.BeginForm("Create", "Customers"))
 {
     <div class="form-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.LabelFor(m => m.Customers.Name)
+        @Html.TextBoxFor(m => m.Customers.Name, new { @class = "form-control" })
     </div>
+
     <div class="form-group">
-        @Html.LabelFor(m => m.Birthdate)
-        @Html.TextBoxFor(m => m.Birthdate, new { @class = "form-control" })
+        @Html.LabelFor(m => m.Customers.Birthdate)
+        @*Can use this with adding the data annotation so if change prop name it gets automatically changed too OR the below*@
+        @*<label for="Birthdate"> Date of Birth</label>*@
+
+        @Html.TextBoxFor(m => m.Customers.Birthdate, new { @class = "form-control" })
     </div>
+
     <div class="checkbox">
         <label>
-            @Html.CheckBoxFor(m => m.IsSubscribedToNewsletter) Subscribed to Newsletter?
+            @Html.CheckBoxFor(m => m.Customers.IsSubscribedToNewsletter) Subscribe to Newsletter?
         </label>
     </div>
+
+    <div>
+        @Html.LabelFor(m => m.Customers.MembershipTypeId)
+        @Html.DropDownListFor(m => m.Customers.MembershipTypeId, new SelectList(Model.MembershipType, "Id", "Name"), "Select Membership Type", new { @class="form-control"})
+    </div>
+    <button type="submit" class= "btn btn-primary">Create Customer</button>
 }

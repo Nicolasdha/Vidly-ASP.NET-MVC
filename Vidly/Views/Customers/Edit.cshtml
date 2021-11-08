@@ -1,0 +1,53 @@
+﻿@model Vidly.Models.Customers
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>@Model.Name</h2>
+
+@using (Html.BeginForm("Save", "Customers"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Birthdate)
+
+        @Html.TextBoxFor(m => m.Birthdate, "{0: d MMM yyyy}", new { @class = "form-control" })
+    </div>
+
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.IsSubscribedToNewsletter) Subscribe to Newsletter?
+        </label>
+    </div>
+
+
+    <div class="off">
+        @Html.LabelFor(m => m.Id)
+        @Html.TextBoxFor(m => m.Id, new { @class = "off" })
+    </div>
+
+    <div class="off">
+
+        @Html.LabelFor(m => m.MembershipTypeId)
+        @Html.TextBoxFor(m => m.MembershipTypeId, new { @class = "off" })
+    </div>
+
+
+
+    @*<div>
+            @Html.LabelFor(m => m.MembershipTypeId)
+            @Html.DropDownListFor(m => m.MembershipTypeId, new SelectList(Model.MembershipType, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+        </div>*@
+    <button type="submit" class="btn btn-primary">Submit Changes</button>
+}
+
+
