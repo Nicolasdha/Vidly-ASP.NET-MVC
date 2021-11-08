@@ -1,0 +1,51 @@
+﻿@model Vidly.Models.Movies
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+
+@using (Html.BeginForm("Save", "Customers"))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Stock)
+
+        @Html.TextBoxFor(m => m.Stock, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Release_date)
+
+        @Html.TextBoxFor(m => m.Release_date,"{0: d MMM yyyy}" ,new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Date_added)
+
+        @Html.TextBoxFor(m => m.Date_added, "{0: d MMM yyyy}", new { @class = "form-control" })
+    </div>
+
+
+    <select class="form-control" id="Genre" name="Genre">
+        <option>Select Genre</option>
+        <option>Action</option>
+        <option>Thriller</option>
+        <option>Drama</option>
+        <option>Romance</option>
+        <option>Comedy</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Create Customer</button>
+}
+
+
+

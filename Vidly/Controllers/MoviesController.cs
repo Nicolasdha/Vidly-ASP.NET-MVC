@@ -45,7 +45,7 @@ namespace Vidly.Controllers
         }
 
 
-        public IActionResult Details(int id)
+        public IActionResult Edit(int id)
         {
             var movie = GetMovies().SingleOrDefault(m => m.Id == id);
 
@@ -55,6 +55,48 @@ namespace Vidly.Controllers
 
             return View(movie);
 
+        }
+
+
+
+        public IActionResult New()
+        {
+
+            var movie = new Movies();
+
+
+            return View(movie);
+        }
+
+
+
+        [HttpPost]
+        public IActionResult Create(Movies movies)
+        {
+
+            var p = new DynamicParameters();
+            p.Add("@name", movies.Name);
+            p.Add("@genre", movies.Genre);
+            p.Add("@release_date", movies.Release_date);
+            p.Add("@Stock", movies.Stock);
+            p.Add("@Date_added", movies.Date_added);
+
+
+            var sql = $@"INSERT INTO [dbo].[Movies] (name, genre, stock, release_date, date_added)
+                            VALUES (@name, @genre, @Stock, @release_date,  @Date_added);";
+
+
+            using (IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
+            {
+
+                //var people = cnn.Query<Customers, MembershipType, Customers>(sql, (customer, member) => { customer.MembershipType = member; return customer; });
+                cnn.Execute(sql, p);
+
+            }
+
+            return Redirect("/");
+
+            //var result = await connection.ExecuteAsync(sql, newPerson);
         }
 
 
