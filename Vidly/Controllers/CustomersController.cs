@@ -26,6 +26,7 @@ namespace Vidly.Controllers
 
 
 
+
         private List<Customers> GetCustomers()
         {
 
@@ -126,11 +127,11 @@ namespace Vidly.Controllers
             p.Add("@memberId", viewModel.Customers.MembershipTypeId);
             p.Add("@subscribed", viewModel.Customers.IsSubscribedToNewsletter);
 
-            var sql =$@"INSERT INTO [dbo].[Customer] (name, birthdate, IsSubscribedToNewsLetter, MembershipTypeId)
+            var sql = $@"INSERT INTO [dbo].[Customer] (name, birthdate, IsSubscribedToNewsLetter, MembershipTypeId)
                             VALUES (@name, @birthday, @subscribed, @memberId);";
 
 
-            using(IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
+            using (IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
             {
 
                 //var people = cnn.Query<Customers, MembershipType, Customers>(sql, (customer, member) => { customer.MembershipType = member; return customer; });
@@ -147,6 +148,21 @@ namespace Vidly.Controllers
 
         public IActionResult Save(Customers customer, int id)
         {
+
+            var memberships = GetMembershiptype();
+
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new NewCustomerViewModel
+                {
+                    Customers = customer,
+                    MembershipType = memberships
+                };
+
+                return View("New", viewModel);
+            };
+
+
             var currentcustomer = GetCustomers().SingleOrDefault(c => c.Id == id);
 
             var p = new DynamicParameters();
@@ -180,6 +196,25 @@ namespace Vidly.Controllers
         }
 
 
+
+
+
+        public IActionResult Delete( int Id)
+        {
+            var p = new DynamicParameters();
+
+            p.Add("@Id", Id);
+
+            var sql = @"DELETE  FROM Customer WHERE ID = @Id";
+
+
+            using (IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
+            {
+                cnn.Execute(sql, p);
+            }
+
+            return Redirect("/Customers");
+        }
 
     }
 }

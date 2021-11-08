@@ -8,6 +8,8 @@
 }
 
 
+
+
 <h2>@Model.Name</h2>
 
 @using (Html.BeginForm("Save", "Customers"))
@@ -48,6 +50,8 @@
             @Html.DropDownListFor(m => m.MembershipTypeId, new SelectList(Model.MembershipType, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
         </div>*@
     <button type="submit" class="btn btn-primary">Submit Changes</button>
+
+    @Html.ActionLink("Delete Customer", "Delete", "Customers", new { Id = Model.Id })
 }
 
 

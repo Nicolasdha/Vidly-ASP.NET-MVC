@@ -140,5 +140,27 @@ namespace Vidly.Controllers
 
 
 
+
+
+        public IActionResult Delete(int Id)
+        {
+            var p = new DynamicParameters();
+
+            p.Add("@Id", Id);
+
+            var sql = @"DELETE  FROM Movies WHERE ID = @Id";
+
+
+            using (IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
+            {
+                cnn.Execute(sql, p);
+            }
+
+            //return Redirect("/Movies");
+            return View();
+        }
+
+
+
     }
 }
