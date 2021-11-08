@@ -9,7 +9,7 @@
 
 <h2>@Model.Name</h2>
 
-@using (Html.BeginForm("Save", "Customers"))
+@using (Html.BeginForm("Save", "Movies"))
 {
 
     <div class="form-group">
@@ -26,7 +26,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Release_date)
 
-        @Html.TextBoxFor(m => m.Release_date,"{0: d MMM yyyy}" ,new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Release_date, "{0: d MMM yyyy}", new { @class = "form-control" })
     </div>
 
     <div class="form-group">
@@ -44,6 +44,13 @@
         <option>Romance</option>
         <option>Comedy</option>
     </select>
+
+    <div class="off">
+
+        @Html.LabelFor(m => m.Id)
+        @Html.TextBoxFor(m => m.Id, new { @class = "off" })
+    </div>
+
     <button type="submit" class="btn btn-primary">Create Customer</button>
 }
 

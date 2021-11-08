@@ -102,5 +102,43 @@ namespace Vidly.Controllers
 
 
 
+        public IActionResult Save(Movies movies, int id)
+        {
+            var currentcustomer = GetMovies().SingleOrDefault(m => m.Id == id);
+
+            var p = new DynamicParameters();
+            p.Add("@name", movies.Name);
+            p.Add("@genre", movies.Genre);
+            p.Add("@release_date", movies.Release_date);
+            p.Add("@Stock", movies.Stock);
+            p.Add("@Date_added", movies.Date_added);
+            p.Add("@Id", movies.Id);
+
+
+            var sql = $@"UPDATE [dbo].[Movies]
+                        SET
+                            Name = @name,
+                            Genre = @genre,
+                            Stock = @stock,
+                            Release_Date = @release_date,
+                            Date_added = @Date_added
+                        WHERE id = @Id";
+
+
+
+            using (IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
+            {
+
+                //var people = cnn.Query<Customers, MembershipType, Customers>(sql, (customer, member) => { customer.MembershipType = member; return customer; });
+                cnn.Execute(sql, p);
+
+            }
+
+            return Redirect("/Movies");
+
+        }
+
+
+
     }
 }

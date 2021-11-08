@@ -156,9 +156,6 @@ namespace Vidly.Controllers
             p.Add("@subscribed", customer.IsSubscribedToNewsletter);
             p.Add("@Id", customer.Id);
 
-            var url = Url;
-            var http = HttpContext;
-
 
             var sql = $@"UPDATE [dbo].[Customer]
                         SET
