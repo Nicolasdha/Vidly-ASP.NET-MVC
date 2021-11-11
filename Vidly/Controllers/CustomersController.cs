@@ -22,11 +22,6 @@ namespace Vidly.Controllers
 
         private const string CONNECTION_STRING = "Server=.; Database=Vidly; User Id=sa; Password=Pittsburgh1; Trusted_Connection=False; MultipleActiveResultSets=true";
 
-
-
-
-
-
         private List<Customers> GetCustomers()
         {
 
@@ -81,12 +76,19 @@ namespace Vidly.Controllers
         {
 
             var customer = GetCustomers().SingleOrDefault(c => c.Id == id);
+            var memberships = GetMembershiptype();
 
             if (customer == null)
                 return this.StatusCode(StatusCodes.Status418ImATeapot, "Customer Not Found");
 
+            var viewModel = new NewCustomerViewModel
+            {
+                Customers = customer,
+                MembershipType = memberships
+            };
 
-            return View(customer);
+
+            return View(viewModel);
 
         }
 
@@ -139,38 +141,38 @@ namespace Vidly.Controllers
 
             }
 
-            return Redirect("/");
+            return Redirect("/Customers");
 
             //var result = await connection.ExecuteAsync(sql, newPerson);
         }
 
 
 
-        public IActionResult Save(Customers customer, int id)
+        public IActionResult Save(NewCustomerViewModel viewModel)
         {
 
             var memberships = GetMembershiptype();
 
-            if (!ModelState.IsValid)
-            {
-                var viewModel = new NewCustomerViewModel
-                {
-                    Customers = customer,
-                    MembershipType = memberships
-                };
+            //if (!ModelState.IsValid)
+            //{
+            //    var viewModel = new NewCustomerViewModel
+            //    {
+            //        Customers = customer,
+            //        MembershipType = memberships
+            //    };
 
-                return View("New", viewModel);
-            };
+            //    return View("New", viewModel);
+            //};
 
 
-            var currentcustomer = GetCustomers().SingleOrDefault(c => c.Id == id);
+            var currentcustomer = GetCustomers().SingleOrDefault(c => c.Id == viewModel.Customers.Id);
 
             var p = new DynamicParameters();
-            p.Add("@name", customer.Name);
-            p.Add("@birthday", customer.Birthdate);
-            p.Add("@memberId", customer.MembershipTypeId);
-            p.Add("@subscribed", customer.IsSubscribedToNewsletter);
-            p.Add("@Id", customer.Id);
+            p.Add("@name", viewModel.Customers.Name);
+            p.Add("@birthday", viewModel.Customers.Birthdate);
+            p.Add("@memberId", viewModel.Customers.MembershipTypeId);
+            p.Add("@subscribed", viewModel.Customers.IsSubscribedToNewsletter);
+            p.Add("@Id", viewModel.Customers.Id);
 
 
             var sql = $@"UPDATE [dbo].[Customer]

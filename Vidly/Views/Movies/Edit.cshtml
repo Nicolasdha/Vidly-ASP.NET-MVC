@@ -1,81 +1,82 @@
-﻿@model Vidly.Models.Movies
+﻿@*@model Vidly.Models.Movies*@
+@model Vidly.Models.ViewModels.MoviesNoListViewModel
+
+
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewBag.Title = Model.Name;
+    ViewBag.Title = Model.Movies.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@Model.Name</h2>
+<h2>@Model.Movies.Name</h2>
 
-@using (Html.BeginForm("Save", "Movies", new { @id = "customers"}))
+@using (Html.BeginForm("Save", "Movies", new { @id = "customers" }))
 {
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.LabelFor(m => m.Movies.Name)
+        @Html.TextBoxFor(m => m.Movies.Name, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Stock)
+        @Html.LabelFor(m => m.Movies.Stock)
 
-        @Html.TextBoxFor(m => m.Stock, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Movies.Stock, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Release_date)
+        @Html.LabelFor(m => m.Movies.Release_date)
 
-        @Html.TextBoxFor(m => m.Release_date, "{0: d MMM yyyy}", new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Movies.Release_date, "{0: d MMM yyyy}", new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Date_added)
+        @Html.LabelFor(m => m.Movies.Date_added)
 
-        @Html.TextBoxFor(m => m.Date_added, "{0: d MMM yyyy}", new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Movies.Date_added, "{0: d MMM yyyy}", new { @class = "form-control" })
     </div>
 
 
-    <select class="form-control" id="Genre" name="Genre">
-        <option>Select Genre</option>
-        <option>Action</option>
-        <option>Thriller</option>
-        <option>Drama</option>
-        <option>Romance</option>
-        <option>Comedy</option>
-    </select>
+    <div>
+            @Html.LabelFor(m => m.Movies.Genre)
+            @Html.DropDownListFor(m => m.Movies.Genre, new SelectList(Model.Genres, "Id", "Genre_name"), "Select Genre Type", new { @class = "form-control" })
+        </div>
 
     <div class="off">
 
-        @Html.LabelFor(m => m.Id)
-        @Html.TextBoxFor(m => m.Id, new { @class = "off" })
+        @Html.LabelFor(m => m.Movies.Id)
+        @Html.TextBoxFor(m => m.Movies.Id, new { @class = "off" })
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit Changes</button>
-   // <button class="btn btn-primary js-delete" asp-action="Delete" asp-controller="Movies">Delete</button>
-    <button class="btn btn-primary js-delete">Delete</button>
 
-    @Html.ActionLink("Delete Movie", "Delete", "Movies", new { Id = Model.Id })
+    <button type="submit" class="btn btn-primary">Submit Changes</button>
+
+    // <button class="btn btn-primary js-delete" asp-action="Delete" asp-controller="Movies">Delete</button>
+
+   // <button class="btn btn-primary js-delete" data-customer-id="@Model.Movies.Id">Delete</button>
+
+    @Html.ActionLink("Delete Movie", "Delete", "Movies", new { Id = Model.Movies.Id })
 }
 
 
 
 @section scripts{
-    <script>
-    $(document).ready(() => {
-        $(".js-delete").on("click", (e) => {
-            e.preventDefault();
-                 $.ajax({
-                     url: '/Movies/Delete',
-                     statusCode: {
-                         404: function (content) { alert('cannot find resource'); },
-                         500: function (content) { alert('internal server error'); }
-                     },
-                     error: function (req, status, errorObj) {
-                         // handle status === "timeout"
-                         // handle other errors
-                     }
-        });
-    })
-    </script>
+    <script>$(document).ready(() => {
+            $(".js-delete").on("click", (e) => {
+                e.preventDefault();
+                $.ajax({
+                    url: '/Movies/Delete/' + $(this).attr("data-customer-id"),
+                    method: "DELETE",
+                    statusCode: {
+                        404: function (content) { alert('cannot find resource'); },
+                        500: function (content) { alert('internal server error'); }
+                    },
+                    error: function (req, status, errorObj) {
+                        // handle status === "timeout"
+                        // handle other errors
+                    }
+                });
+            })</script>
 }

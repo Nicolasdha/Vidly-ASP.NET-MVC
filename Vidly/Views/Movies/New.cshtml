@@ -1,4 +1,4 @@
-﻿@model Vidly.Models.Movies
+﻿@model Vidly.Models.ViewModels.MoviesNoListViewModel
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -14,38 +14,34 @@
 @using (Html.BeginForm("Create", "Movies"))
 {
     <div class="form-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.LabelFor(m => m.Movies.Name)
+        @Html.TextBoxFor(m => m.Movies.Name, new { @class = "form-control" })
     </div>
 
-  
+
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Stock)
+        @Html.LabelFor(m => m.Movies.Stock)
 
-        @Html.TextBoxFor(m => m.Stock, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Release_date)
-
-        @Html.TextBoxFor(m => m.Release_date, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Movies.Stock, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Date_added)
+        @Html.LabelFor(m => m.Movies.Release_date)
 
-        @Html.TextBoxFor(m => m.Date_added,new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Movies.Release_date, "{0: d MMM yyyy}", new { @class = "form-control" })
     </div>
 
+    <div class="form-group">
+        @Html.LabelFor(m => m.Movies.Date_added)
 
-    <select class="form-control" id="Genre" name="Genre">
-        <option>Select Genre</option>
-        <option>Action</option>
-        <option>Thriller</option>
-        <option>Drama</option>
-        <option>Romance</option>
-        <option>Comedy</option>
-    </select>
-    <button type="submit" class="btn btn-primary">Create Customer</button>
+        @Html.TextBoxFor(m => m.Movies.Date_added, "{0: d MMM yyyy}", new { @class = "form-control" })
+    </div>
+ 
+    <div>
+        @Html.LabelFor(m => m.Movies.Genre)
+        @Html.DropDownListFor(m => m.Movies.Genre, new SelectList(Model.Genres, "Id", "Genre_name"), "Select Genre Type", new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Movie</button>
 }

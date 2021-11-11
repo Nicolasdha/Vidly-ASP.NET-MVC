@@ -8,6 +8,7 @@ using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Vidly.Models;
+using Vidly.Models.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,10 +28,27 @@ namespace Vidly.Controllers
             using (IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
             {
 
-                var people = cnn.Query<Movies>(sql);
+                var movies = cnn.Query<Movies>(sql);
 
 
-                return (List<Movies>)people;
+                return (List<Movies>)movies;
+            }
+
+        }
+
+
+
+        private List<Genres> GetGenres()
+        {
+
+            var sql = @"SELECT * from DBO.Genres";
+
+            using (IDbConnection cnn = new SqlConnection(CONNECTION_STRING))
+            {
+                var genres = cnn.Query<Genres>(sql);
+
+
+                return (List<Genres>)genres;
             }
 
         }
@@ -40,20 +58,36 @@ namespace Vidly.Controllers
         public IActionResult Index()
         {
             var movies = GetMovies();
+            var genres = GetGenres();
 
-            return View(movies);
+            //var moviesList = new List<Movies> { movies };
+
+            var viewModel = new MovieViewModel
+            {
+                Movies = movies,
+                Genres = genres
+            };
+
+            return View(viewModel);
         }
 
 
         public IActionResult Edit(int id)
         {
             var movie = GetMovies().SingleOrDefault(m => m.Id == id);
+            var genres = GetGenres();
 
             if (movie == null)
                 return this.StatusCode(StatusCodes.Status418ImATeapot, "Customer Not Found");
 
+            var viewModel = new MoviesNoListViewModel
+            {
+                Movies = movie,
+                Genres = genres
+            };
 
-            return View(movie);
+
+            return View(viewModel);
 
         }
 
@@ -62,11 +96,20 @@ namespace Vidly.Controllers
         public IActionResult New()
         {
 
-            var movie = new Movies();
+
+            var genres = GetGenres();
+
+            var viewModel = new MoviesNoListViewModel
+            {
+                Movies = new Movies(),
+                Genres = genres
+            };
 
 
-            return View(movie);
+            return View(viewModel);
         }
+
+
 
 
 
@@ -91,10 +134,9 @@ namespace Vidly.Controllers
 
                 //var people = cnn.Query<Customers, MembershipType, Customers>(sql, (customer, member) => { customer.MembershipType = member; return customer; });
                 cnn.Execute(sql, p);
-
             }
 
-            return Redirect("/");
+            return Redirect("/Movies");
 
             //var result = await connection.ExecuteAsync(sql, newPerson);
         }
@@ -157,7 +199,7 @@ namespace Vidly.Controllers
             }
 
             //return Redirect("/Movies");
-            return View();
+            return Redirect("/Movies");
         }
 
 

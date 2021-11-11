@@ -1,46 +1,56 @@
-﻿@model Vidly.Models.Customers
+﻿@*@model Vidly.Models.Customers*@
+
+@model Vidly.Models.ViewModels.NewCustomerViewModel
+
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewBag.Title = Model.Name;
+    ViewBag.Title = Model.Customers.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
 
 
-<h2>@Model.Name</h2>
+<h2>@Model.Customers.Name</h2>
 
 @using (Html.BeginForm("Save", "Customers"))
 {
     <div class="form-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.LabelFor(m => m.Customers.Name)
+        @Html.TextBoxFor(m => m.Customers.Name, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Birthdate)
+        @Html.LabelFor(m => m.Customers.Birthdate)
 
-        @Html.TextBoxFor(m => m.Birthdate, "{0: d MMM yyyy}", new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Customers.Birthdate, "{0: d MMM yyyy}", new { @class = "form-control" })
     </div>
 
     <div class="checkbox">
         <label>
-            @Html.CheckBoxFor(m => m.IsSubscribedToNewsletter) Subscribe to Newsletter?
+            @Html.CheckBoxFor(m => m.Customers.IsSubscribedToNewsletter) Subscribe to Newsletter?
         </label>
     </div>
 
 
+    <div>
+        @Html.LabelFor(m => m.Customers.MembershipTypeId)
+        @Html.DropDownListFor(m => m.Customers.MembershipTypeId, new SelectList(Model.MembershipType, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+    </div>
+
+
+
     <div class="off">
-        @Html.LabelFor(m => m.Id)
-        @Html.TextBoxFor(m => m.Id, new { @class = "off" })
+        @Html.LabelFor(m => m.Customers.Id)
+        @Html.TextBoxFor(m => m.Customers.Id, new { @class = "off" })
     </div>
 
     <div class="off">
 
-        @Html.LabelFor(m => m.MembershipTypeId)
-        @Html.TextBoxFor(m => m.MembershipTypeId, new { @class = "off" })
+        @Html.LabelFor(m => m.Customers.MembershipTypeId)
+        @Html.TextBoxFor(m => m.Customers.MembershipTypeId, new { @class = "off" })
     </div>
 
 
@@ -51,7 +61,7 @@
         </div>*@
     <button type="submit" class="btn btn-primary">Submit Changes</button>
 
-    @Html.ActionLink("Delete Customer", "Delete", "Customers", new { Id = Model.Id })
+    @Html.ActionLink("Delete Customer", "Delete", "Customers", new { Id = Model.Customers.Id })
 }
 
 

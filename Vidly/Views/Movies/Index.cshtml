@@ -1,18 +1,11 @@
-﻿@model IEnumerable<Vidly.Models.Movies>
+﻿@model Vidly.Models.ViewModels.MovieViewModel
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
 
-
-@if (!Model.Any())
-{
-    <p>Unfortunately, no movies yet.</p>
-}
-else
-{
-    @Html.ActionLink("Add Movie", "New", "Movies")
+@Html.ActionLink("Add Movie", "New", "Movies")
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -22,14 +15,36 @@ else
         </thead>
 
         <tbody>
-            @foreach (var movie in Model)
+            @foreach (var movie in Model.Movies)
             {
-                <tr>
-                    <td>@Html.ActionLink(movie.Name, "Edit", "Movies", new { id = movie.Id }, null)</td>
-                    <td>@movie.Genre</td>
-                </tr>
+            <tr>
+                <td>@Html.ActionLink(movie.Name, "Edit", "Movies", new { id = movie.Id, movie=movie }, null)</td>
+                @*<td>@movie.Genre</td>*@
+                @switch (movie.Genre)
+                {
+                    case "1":
+                        <td>Action</td>
+                        break;
+                    case "2":
+                        <td>Comedy</td>
+                        break;
+                    case "3":
+                        <td>Thriller</td>
+                        break;
+                    case "4":
+                        <td>Romance</td>
+                        break;
+                    case "5":
+                        <td>Martial Arts</td>
+                        break;
+                    case "6":
+                        <td>Drama</td>
+                        break;
+                    default:
+                        break;
+                }
+            </tr>
             }
         </tbody>
 
     </table>
-}
