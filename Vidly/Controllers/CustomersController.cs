@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -61,7 +62,7 @@ namespace Vidly.Controllers
         }
 
 
-
+        //[Authorize]
         public IActionResult Index()
         {
 

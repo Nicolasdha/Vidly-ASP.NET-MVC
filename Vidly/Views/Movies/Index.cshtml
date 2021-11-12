@@ -6,19 +6,19 @@
 }
 
 @Html.ActionLink("Add Movie", "New", "Movies")
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Movies</th>
-                <th>Genre</th>
-            </tr>
-        </thead>
+<table id="dataTable" class="table table-bordered table-hover display">
+    <thead>
+        <tr>
+            <th>Movies</th>
+            <th>Genre</th>
+        </tr>
+    </thead>
 
-        <tbody>
-            @foreach (var movie in Model.Movies)
-            {
+    <tbody>
+        @foreach (var movie in Model.Movies)
+        {
             <tr>
-                <td>@Html.ActionLink(movie.Name, "Edit", "Movies", new { id = movie.Id, movie=movie }, null)</td>
+                <td>@Html.ActionLink(movie.Name, "Edit", "Movies", new { id = movie.Id, movie = movie }, null)</td>
                 @*<td>@movie.Genre</td>*@
                 @switch (movie.Genre)
                 {
@@ -44,7 +44,21 @@
                         break;
                 }
             </tr>
-            }
-        </tbody>
+        }
+    </tbody>
 
-    </table>
+</table>
+
+
+
+@section scripts{
+
+    <script>
+        $(document).ready(() => {
+        $("#dataTable").DataTable();
+            })</script>
+}
+
+
+
+

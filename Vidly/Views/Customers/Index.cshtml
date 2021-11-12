@@ -6,6 +6,8 @@
 }
 
 
+
+
 @if (!Model.Any())
 {
     <p>Unfortunately, no customers yet.</p>
@@ -13,32 +15,57 @@
 else
 {
 
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Customer</th>
-                <th>Discount Rate</th>
-            </tr>
-        </thead>
+            <table id="dataTable" class="table table-bordered table-hover display">
 
-        <tbody>
-            @foreach (var customer in Model)
-            {
+            <thead>
                 <tr>
-                    <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id, customer = customer }, null)</td>
-                    <td>@customer.MembershipType.Name</td>
+                    <th>Customer</th>
+                    <th>Discount Rate</th>
                 </tr>
-            }
-        </tbody>
+            </thead>
 
-    </table>
-    @Html.ActionLink("Create New Customer", "New", "Customers")
+            <tbody>
+                @foreach (var customer in Model)
+                {
+                    <tr>
+                        <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id, customer = customer }, null)</td>
+                        <td>@customer.MembershipType.Name</td>
+                    </tr>
+                }
+            </tbody>
 
+        </table>
+        @Html.ActionLink("Create New Customer", "New", "Customers")
 }
 
 
 
 
+
+@section scripts{
+
+    
+
+    <script>
+        $(document).ready(() => {
+        $("#dataTable").DataTable();
+
+            @*$(".js-delete").on("click", (e) => {
+                e.preventDefault();
+                $.ajax({
+                    url: '/Movies/Delete/' + $(this).attr("data-customer-id"),
+                    method: "DELETE",
+                    statusCode: {
+                        404: function (content) { alert('cannot find resource'); },
+                        500: function (content) { alert('internal server error'); }
+                    },
+                    error: function (req, status, errorObj) {
+                        // handle status === "timeout"
+                        // handle other errors
+                    }
+                });*@
+            })</script>
+}
 
 
 

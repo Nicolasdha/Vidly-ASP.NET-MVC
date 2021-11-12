@@ -11,6 +11,7 @@
     <None Remove="Dapper" />
     <None Remove="System.Data.SqlClient" />
     <None Remove="jquery.datatables" />
+    <None Remove="Views\Rentals\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
@@ -30,5 +31,6 @@
   <ItemGroup>
     <Folder Include="Views\Customers\" />
     <Folder Include="Views\Movies\" />
+    <Folder Include="Views\Rentals\" />
   </ItemGroup>
 </Project>
